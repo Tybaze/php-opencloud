@@ -871,4 +871,36 @@ class Server extends NovaResource implements HasPtrRecordsInterface
 
         return $this->action($object);
     }
+    
+    /**
+     * Add Floating Ip
+     *
+     * @api
+     * @param string Floating Ip address to link to the server
+     * @param string optional Fixed address linked to the floating one
+     * @return boolean
+     * @throws Exceptions\ServerActionError if wrong input
+     */
+    public function addFloatingIp($address,$fixed_address = NULL)
+    {
+
+        if (!$address) {
+            throw new Exceptions\ServerActionError(
+                Lang::translate('Please provide an address')
+            );
+        }
+
+        $params = array(
+            'address' => $address
+        );
+
+        if($fixed_address) {
+          $params['fixed_address'] = $fixed_address; 
+        }
+
+        $object = (object) array('addFloatingIp' => (object) $params);
+
+        return $this->action($object);
+    }
+
 }
