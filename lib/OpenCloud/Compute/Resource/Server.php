@@ -878,7 +878,7 @@ class Server extends NovaResource implements HasPtrRecordsInterface
      * @api
      * @param string Floating Ip address to link to the server
      * @param string optional Fixed address linked to the floating one
-     * @return boolean
+     * @return \Guzzle\Http\Message\Response
      * @throws Exceptions\ServerActionError if wrong input
      */
     public function addFloatingIp($address,$fixed_address = NULL)
@@ -902,5 +902,28 @@ class Server extends NovaResource implements HasPtrRecordsInterface
 
         return $this->action($object);
     }
+    
+    /**
+     * Remove Floating Ip
+     *
+     * @api
+     * @param string Floating Ip address to link to the server
+     * @return \Guzzle\Http\Message\Response
+     * @throws Exceptions\ServerActionError if wrong input
+     */
+    public function removeFloatingIp($address)
+    {
 
+        if (!$address) {
+            throw new Exceptions\ServerActionError(
+                Lang::translate('Please provide an address')
+            );
+        }
+
+        $object = (object) array(
+            'removeFloatingIp' => (object) array('address' => $address)
+        );
+
+        return $this->action($object);
+    }
 }
